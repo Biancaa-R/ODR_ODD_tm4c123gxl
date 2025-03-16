@@ -4,6 +4,7 @@
 
 output obtained in putty:
 
+* The microcontroller code for tm4c123g needs some fixes , Ill do it but not today :)
 * This is a group project but no one works on this other than me :/ , life is hard , ssn is bad and I am so sad .
 *  I cant say anything , if I do Iam the "bad guy"
 *  what kind of monstrosity is this :-0
