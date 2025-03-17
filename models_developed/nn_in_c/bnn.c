@@ -2,22 +2,31 @@
   bnn.c
   Basic Neural Network in C.
 
-  $ cc -o bnn bnn.c -lm
+  $ cc -o bnn bnn.c -l
 */
 
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdint.h>
 #define IMG_SIZE 784  // 28x28 image
 #define DEBUG_LAYER 0
 
+int8_t binarize(float value) {
+    return (value >= 0) ? 1 : -1;
+}
+
+int xnor(int a, int b) {
+    return ~(a ^ b);  // XNOR logic: equivalent to multiplication in binary
+}
 /* f: function to learn */
 static double f(double a, double b)
 {
     /* return a*b; */
     return fabs(a-b);
     //calculates the absolute value of floating value number
+    //Specifically, it is used to generate the target output (t[0]) for the neural network during training.
 }
 
 /* rnd(): uniform random [0.0, 1.0] */
@@ -25,6 +34,7 @@ static inline double rnd()
 {
     return ((double)rand() / RAND_MAX);
     //generation of random floating point numbers.
+    //set of input numbers
 }
 
 /* nrnd(): normal random (std=1.0) */
@@ -43,6 +53,8 @@ static inline double sigmoid(double x)
 static inline double sigmoid_g(double y)
 {
     return y * (1.0 - y);
+    //sigmoid gradient
+    // wij(new) =wij(old) - etta*delta(j)*alpha --> updation of weight
 }
 
 
@@ -54,20 +66,24 @@ typedef struct _Layer {
     int lid;                    /* Layer ID */
     struct _Layer* lprev;       /* Previous Layer */
     struct _Layer* lnext;       /* Next Layer */
+    //similar to linked list structure
 
     int nnodes;                 /* Num. of Nodes */
+    //contains nodes
     double* outputs;            /* Node Outputs */
+    //stores activation values
     double* gradients;          /* Node Gradients */
     double* errors;             /* Node Errors */
-
+    //values for back propagation
     int nbiases;                /* Num. of Biases */
     double* biases;             /* Biases (trained) */
     double* u_biases;           /* Bias Updates */
-
+    //updated bias -->changes during training
     int nweights;               /* Num. of Weights */
     double* weights;            /* Weights (trained) */
+    //contains the connection between layers
     double* u_weights;          /* Weight Updates */
-
+    //updated weights during training
 } Layer;
 
 /* Layer_create(lprev, nnodes)
@@ -117,6 +133,7 @@ Layer* Layer_create(Layer* lprev, int nnodes)
 */
 void Layer_destroy(Layer* self)
 {
+    //freeing the allocated memory
     assert (self != NULL);
 
     free(self->outputs);
@@ -141,6 +158,7 @@ void Layer_destroy(Layer* self)
 
 /* Layer_dump(self, fp)
    Shows the debug output.
+   //printing function output
 */
 void Layer_dump(const Layer* self, FILE* fp)
 {
@@ -178,6 +196,8 @@ void Layer_dump(const Layer* self, FILE* fp)
 */
 static void Layer_feedForw(Layer* self)
 {
+    //weighted sum of inputs and sigmoid activation
+    //stores outputs and gradients for back propagation
     assert (self->lprev != NULL);
     Layer* lprev = self->lprev;
 
@@ -219,6 +239,7 @@ static void Layer_feedBack(Layer* self)
     Layer* lprev = self->lprev;
 
     /* Clear errors. */
+    //set initial errors to zero
     for (int j = 0; j < lprev->nnodes; j++) {
         lprev->errors[j] = 0;
     }
@@ -234,6 +255,7 @@ static void Layer_feedBack(Layer* self)
             k++;
         }
         self->u_biases[i] += dnet;
+        //updates weights and bias gradients
     }
 
 #if DEBUG_LAYER
@@ -302,6 +324,7 @@ double Layer_getErrorTotal(const Layer* self)
         total += e*e;
     }
     return (total / self->nnodes);
+    //total error as e^2 / total number of nodes
 }
 
 /* Layer_learnOutputs(self, values)
@@ -377,17 +400,22 @@ int main(int argc, char* argv[])
     /* Run the network. */
     double rate = 1.0;
     int nepochs = 10000;
+    //setting the number of epochs
     for (int i = 0; i < nepochs; i++) {
         double x[2];
         double y[1];
         double t[1];
         x[0] = rnd();
+        //andom inputs
         x[1] = rnd();
+        //random inputs
         t[0] = f(x[0], x[1]);
+        //target output
         Layer_setInputs(linput, x);
         Layer_getOutputs(loutput, y);
         Layer_learnOutputs(loutput, t);
         double etotal = Layer_getErrorTotal(loutput);
+        //total error calculation
         fprintf(stderr, "i=%d, x=[%.4f, %.4f], y=[%.4f], t=[%.4f], etotal=%.4f\n",
                 i, x[0], x[1], y[0], t[0], etotal);
         Layer_update(loutput, rate);
