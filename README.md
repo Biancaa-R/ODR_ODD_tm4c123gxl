@@ -11,6 +11,8 @@ image dataset saved:
 ![image](https://github.com/user-attachments/assets/e9a44c78-1f3d-40c3-a0a4-f3a085798a3f)
 ![image](https://github.com/user-attachments/assets/0a389416-b35b-4ff9-a17a-b3a766603bbf)
 
+> Data set used: https://www.kaggle.com/datasets/hojjatk/mnist-dataset?resource=download
+
 
 * The microcontroller code for tm4c123g needs some fixes , Ill do it but not today :)
 * This is a group project but no one works on this other than me :/ , life is hard , ssn is bad and I am so sad .
