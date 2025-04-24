@@ -32,8 +32,4 @@ Data distribution in CSV file:
      
 ### Approm makkale  
 * The microcontroller code for tm4c123g needs some fixes , Ill do it but not today :)
-* This is a group project but no one works on this other than me :/ , life is hard , ssn is bad and I am so sad .
-*  I cant say anything , if I do Iam the "bad guy"
-*  what kind of monstrosity is this :-0
-*  I am not even going to think about it as it could make me get "retha kodhipu"
-*  Actlin ma'am Kaythry ma'am ,over here!
+* To implement the loading of weights to the board
