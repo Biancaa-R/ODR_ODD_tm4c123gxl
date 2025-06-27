@@ -32,4 +32,12 @@ Data distribution in CSV file:
      
 ### Approm makkale  
 * The microcontroller code for tm4c123g needs some fixes , Ill do it but not today :)
-* To implement the loading of weights to the board
+* To implement the loading of weights to the board --> The current one works by training ON the board . Passing of input data through uart and training on it.
+* Passing of weights calculated or Reading of the weights from a memory source --> Seems like an easier/more optimized way to improve accuracy.
+  
+  -> https://stackoverflow.com/questions/56855107/how-do-i-get-weights-and-biases-from-my-model
+  
+  -> https://github.com/keras-team/tf-keras/issues/333
+  
+  -> https://bernsteinbear.com/blog/compiling-ml-models/
+  
