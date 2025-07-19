@@ -40,4 +40,9 @@ Data distribution in CSV file:
   -> https://github.com/keras-team/tf-keras/issues/333
   
   -> https://bernsteinbear.com/blog/compiling-ml-models/
+
+  ### Note:
+  * calculated accuracy : 68 -70 percent ,as the training takes place in the microcontroller.
+  * Precision 0.3 ish .
+  * Using of CNN or a more suitable structure can improve performance.
   
