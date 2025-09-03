@@ -1,9 +1,4 @@
-/*
-  bnn.c
-  Basic Neural Network in C.
 
-  $ cc -o bnn bnn.c -l
-*/
 
 #include <assert.h>
 #include <stdio.h>
@@ -381,82 +376,4 @@ void Layer_update(Layer* self, double rate)
     if (self->lprev != NULL) {
         Layer_update(self->lprev, rate);
     }
-}
-
-
-/* main */
-int main(int argc, char* argv[])
-{
-    /* Use a fixed random seed for debugging. */
-    srand(0);
-    /* Initialize layers. */
-    Layer* linput = Layer_create(NULL, 2);
-    Layer* lhidden = Layer_create(linput, 3);
-    Layer* loutput = Layer_create(lhidden, 1);
-    Layer_dump(linput, stderr);
-    Layer_dump(lhidden, stderr);
-    Layer_dump(loutput, stderr);
-
-    /* Run the network. */
-    double rate = 1.0;
-    int nepochs = 10000;
-    //setting the number of epochs
-    for (int i = 0; i < nepochs; i++) {
-        double x[2];
-        double y[1];
-        double t[1];
-        x[0] = rnd();
-        //random inputs
-        x[1] = rnd();
-        //random inputs
-        t[0] = f(x[0], x[1]);
-        //target output
-        //subtracted value
-        Layer_setInputs(linput, x);
-        Layer_getOutputs(loutput, y);
-        Layer_learnOutputs(loutput, t);
-        double etotal = Layer_getErrorTotal(loutput);
-        //total error calculation
-        fprintf(stderr, "i=%d, x=[%.4f, %.4f], y=[%.4f], t=[%.4f], etotal=%.4f\n",
-                i, x[0], x[1], y[0], t[0], etotal);
-        Layer_update(loutput, rate);
-    }
-
-    /* Dump the finished network. */
-    Layer_dump(linput, stdout);
-    Layer_dump(lhidden, stdout);
-    Layer_dump(loutput, stdout);
-
-    // double x[2];
-     double y[10];
-    // double t[1];
-
-    // x[0] = 0.5;   // Set first input manually
-    // x[1] = 0.8;   // Set second input manually
-    // t[0] = f(x[0], x[1]);  // Compute the expected output
-
-    // Layer_setInputs(linput, x);
-    // Layer_getOutputs(loutput, y);
-    // printf("Input: x1=%.4f, x2=%.4f\n", x[0], x[1]);
-    // printf("Output: y=%.4f (Expected: %.4f)\n", y[0], t[0]);
-    double x[IMG_SIZE] = {0};  // Initialize all to zero
-    x[200] = 1.0;  // Example: Activating one pixel
-    x[300] = 0.8;  // Another pixel with lower intensity
-
-    Layer_setInputs(linput, x);
-    Layer_getOutputs(loutput, y);
-
-    int predicted_digit = 0;
-    for (int i = 1; i < 10; i++) {
-        if (y[i] > y[predicted_digit]) predicted_digit = i;
-    }
-
-    printf("Predicted digit: %d\n", predicted_digit);
-
-
-    Layer_destroy(linput);
-    Layer_destroy(lhidden);
-    Layer_destroy(loutput);
-
-    return 0;
 }
