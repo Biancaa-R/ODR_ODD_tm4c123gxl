@@ -30,8 +30,7 @@ Data distribution in CSV file:
   2.  mnist_loader.c to load the image dataset.
   3.  bnn.c -> Initial implementation of bnn, without using the MNIST dataset.
      
-### Approm makkale  
-* The microcontroller code for tm4c123g needs some fixes , Ill do it but not today :)
+
 * To implement the loading of weights to the board --> The current one works by training ON the board . Passing of input data through uart and training on it.
 * Passing of weights calculated or Reading of the weights from a memory source --> Seems like an easier/more optimized way to improve accuracy.
   
